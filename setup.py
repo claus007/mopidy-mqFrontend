@@ -29,7 +29,7 @@ setup(
     ],
     entry_points={
         'mopidy.ext': [
-            'soundspot = mopidy_mqFrontend:Extension',
+            'mqFrontend = mopidy_mqFrontend:Extension',
         ],
     },
     classifiers=[
