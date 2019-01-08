@@ -27,7 +27,7 @@ Although the settings should be ok, please check the configuration.
 Project resources
 =================
 
-- `Source code <https://github.com/mopidy/mopidy-soundspot>`_
-- `Issue tracker <https://github.com/mopidy/mopidy-soundspot/issues>`_
-- `Development branch tarball <https://github.com/mopidy/mopidy-soundspot/tarball/master#egg=Mopidy-Soundspot-dev>`_
+- `Source code <https://github.com/claus007/mopidy-mqFrontend>`_
+- `Issue tracker <https://github.com/claus007/mopidy-mqFrontend/issues>`_
+- `Development branch tarball <https://github.com/claus007/mopidy-mqFrontend/tarball/master#egg=Mopidy-mqFrontend-dev>`_
 
