@@ -21,6 +21,17 @@ Configuration
 
 Although the settings should be ok, please check the configuration.
 
+Parameters are:
+
+    enable      true if extension is enabled
+    
+    path        topic under which this control is published (default: mopidy)
+    host
+    
+port
+username
+password
+
 
 
 
