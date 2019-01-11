@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 class Extension(ext.Extension):
 
-    dist_name = 'Mopidy-Soundspot'
-    ext_name = 'soundspot'
+    dist_name = 'Mopidy-mqFrontend'
+    ext_name = 'mqfrontend'
     version = __version__
 
     def get_default_config(self):
@@ -45,10 +45,6 @@ class Extension(ext.Extension):
         # Register a frontend
         from .frontend import SoundspotFrontend
         registry.add('frontend', SoundspotFrontend)
-
-        # Register a backend
-        from .backend import SoundspotBackend
-        registry.add('backend', SoundspotBackend)
 
         # Or nothing to register e.g. command extension
         pass
