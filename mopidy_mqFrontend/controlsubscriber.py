@@ -14,10 +14,26 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import pykka
+import mopidy
+import paho.mqtt.client as mqtt
+
 import logging
 
 
 class ControlSubscriber(pykka.ThreadingActor):
 
     def __init__(self, config, core, logger):
-        pass
+        self.config = config
+        self.core = core
+        self.logger = logger
+        self.mqtt_client = mqtt()
+
+    def on_start(self):
+        host = self.config["host"]
+        port = self.config["port"]
+        self.logger.info("Starting Control Client / Connecting on %s:%d" % (host, port))
+        self.mqtt_client.connect(host, port)
+
+    def on_stop(self):
+        self.logger.info("Stopping Control Client")
