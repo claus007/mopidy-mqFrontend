@@ -1,12 +1,12 @@
-****************
+******************
 Mopidy-mqFrontend
-****************
+******************
 
 Display the current playing options in an MQTT Broker.
 
 
 Installation [for future]
-============
+=========================
 
 Install by running::
 
