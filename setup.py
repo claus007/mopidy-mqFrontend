@@ -26,6 +26,7 @@ setup(
         'setuptools',
         'Mopidy >= 0.14',
         'Pykka >= 1.1',
+        'paho-mqtt >= 1.4.0',
     ],
     entry_points={
         'mopidy.ext': [

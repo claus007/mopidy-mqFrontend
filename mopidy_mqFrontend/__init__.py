@@ -42,6 +42,10 @@ class Extension(ext.Extension):
 
     def get_config_schema(self):
         schema = super(Extension, self).get_config_schema()
+        schema['topic'] = config.String()
+        schema['host'] = config.Hostname()
+        schema['port'] = config.Port()
+
         schema['username'] = config.String()
         schema['password'] = config.Secret()
         return schema
@@ -60,8 +64,8 @@ class Extension(ext.Extension):
         # single extension.
 
         # Register a frontend
-        from .frontend import SoundspotFrontend
-        registry.add('frontend', SoundspotFrontend)
+        from .mainactor import MainActor
+        registry.add('frontend', MainActor)
 
         # Or nothing to register e.g. command extension
         pass
