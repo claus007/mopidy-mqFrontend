@@ -47,8 +47,7 @@ class Extension(ext.Extension):
         return schema
 
     def get_command(self):
-        from .commands import SoundspotCommand
-        return SoundspotCommand()
+        pass
 
     def validate_environment(self):
         # Any manual checks of the environment to fail early.
