@@ -42,8 +42,6 @@ class ControlSubscriber(pykka.ThreadingActor):
         self.logger.info('Starting Control Client / Connecting on %s:%d' % (host, port))
         self.mosquitto_client.connect(host, port)
 
-        self.in_future.do_work()
-
     def on_stop(self):
         self.logger.debug('Stopping Client - disabling reconnection')
         self.mosquitto_client.on_disconnect = None
@@ -55,6 +53,7 @@ class ControlSubscriber(pykka.ThreadingActor):
         topic = "{0}/{1}".format(self.config['topic'], 'control')
         self.logger.debug('Subscribing to {}'.format(topic))
         self.mosquitto_client.subscribe(topic)
+        self.in_future.do_work()
 
     def on_disconnect(self):
         self.logger.info('DISConnected - Reconnecting...')

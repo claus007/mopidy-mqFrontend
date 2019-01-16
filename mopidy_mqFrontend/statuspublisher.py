@@ -14,10 +14,43 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import logging
+import pykka
+import paho.mqtt.client
+import mopidy.core.listener
 
+class StatusPublisher(pykka.ThreadingActor,CoreListener)
 
-class StatusPublisher(pykka.ThreadingActor):
+    config = None  # type: dict
+    core = None  # type: mopidy.core.Core
+    mosquitto_client = None  # type: paho.mqtt.client.Client
 
-    def __init__(self, config, core, logger):
-        pass
+    def __init__(self, config, core, logger, *args, **kwargs):
+        super(StatusPublisher, self).__init__(*args, **kwargs)
+        self.in_future = self.actor_ref.proxy()
+        self.config = config
+        self.core = core
+        self.logger = logger
+        self.mosquitto_client = paho.mqtt.client.Client()
+
+    def on_start(self):
+        host = self.config['host']
+        port = self.config['port']
+        self.mosquitto_client.on_connect = self.on_connect
+        self.mosquitto_client.on_disconnect = self.on_disconnect
+        self.mosquitto_client.on_message = self.on_mq_message
+
+        self.logger.info('Starting Control Client / Connecting on %s:%d' % (host, port))
+        self.mosquitto_client.connect(host, port)
+
+    def on_stop(self):
+        self.logger.debug('Stopping Client - disabling reconnection')
+        self.mosquitto_client.on_disconnect = None
+        self.mosquitto_client.disconnect()
+        self.logger.info('Client stopped')
+
+    def on_connect(self):
+        self.logger.debug('Connected')
+
+    def on_disconnect(self):
+        self.logger.info('DISConnected - Reconnecting...')
+        self.mosquitto_client.reconnect()
