@@ -18,21 +18,28 @@ from .controlsubscriber import ControlSubscriber
 from .statuspublisher import StatusPublisher
 
 import logging
+import pykka
 
 
 class MainActor(pykka.ThreadingActor):
 
+    config = None  # type: dict
+    status = None  # type: StatusPublisher
+    control = None  # type: ControlSubscriber
+
     def __init__(self, config, core):
         super(MainActor, self).__init__()
+        self.config = config
+        self.core = core
         # import logger
         self.logger = logging.getLogger(__name__)
 
     def on_start(self):
-        self.logger.info("Starting MqFrontend")
-        self.control = ControlSubscriber(config, core, self.logger.getChild("ControlSubscriber")).start()
-        self.status = StatusPublisher(config, core, self.logger.getChild("StatusPublisher")).start()
+        self.logger.info('Starting MqFrontend')
+        self.control = ControlSubscriber(self.config, self.core, self.logger.getChild('ControlSubscriber')).start()
+        self.status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher')).start()
 
     def on_stop(self):
-        self.logger.info("Stopping MqFrontend")
+        self.logger.info('Stopping MqFrontend')
         self.control.stop()
         self.status.stop()

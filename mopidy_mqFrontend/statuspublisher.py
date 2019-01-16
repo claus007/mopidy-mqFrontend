@@ -17,12 +17,13 @@ from __future__ import absolute_import, unicode_literals
 import pykka
 import paho.mqtt.client
 import mopidy.core.listener
+import paho.mqtt.client as mqtt
 
-class StatusPublisher(pykka.ThreadingActor,CoreListener)
 
+class StatusPublisher(pykka.ThreadingActor, CoreListener):
     config = None  # type: dict
     core = None  # type: mopidy.core.Core
-    mosquitto_client = None  # type: paho.mqtt.client.Client
+    mosquitto_client = None  # type: mqtt.Client
 
     def __init__(self, config, core, logger, *args, **kwargs):
         super(StatusPublisher, self).__init__(*args, **kwargs)
@@ -39,6 +40,8 @@ class StatusPublisher(pykka.ThreadingActor,CoreListener)
         self.mosquitto_client.on_disconnect = self.on_disconnect
         self.mosquitto_client.on_message = self.on_mq_message
 
+        self.mosquitto_client.will_set(self.get_topic(), 'disconnected', 0, True)
+
         self.logger.info('Starting Control Client / Connecting on %s:%d' % (host, port))
         self.mosquitto_client.connect(host, port)
 
@@ -54,3 +57,10 @@ class StatusPublisher(pykka.ThreadingActor,CoreListener)
     def on_disconnect(self):
         self.logger.info('DISConnected - Reconnecting...')
         self.mosquitto_client.reconnect()
+
+    def on_event(self, event, **kwargs):
+        self.logger.debug('Event: {{}}'.format(event))
+        self.mosquitto_client.publish(self.get_topic(), event)
+
+    def get_topic(self):
+        return "{{}}{{}}".format(self.config['topic'], 'status')
