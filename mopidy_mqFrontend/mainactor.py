@@ -36,7 +36,8 @@ class MainActor(pykka.ThreadingActor):
 
     def on_start(self):
         self.logger.info('Starting MqFrontend')
-        self.control = ControlSubscriber(self.config, self.core, self.logger.getChild('ControlSubscriber')).start()
+        control = ControlSubscriber(self.config, self.core, self.logger.getChild('ControlSubscriber'))
+        self.control=control.start()
         self.status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher')).start()
 
     def on_stop(self):
