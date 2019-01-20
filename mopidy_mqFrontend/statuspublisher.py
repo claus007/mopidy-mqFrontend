@@ -16,7 +16,7 @@ from __future__ import absolute_import, unicode_literals
 
 import pykka
 import paho.mqtt.client
-import mopidy.core.listener
+from mopidy.core.listener import CoreListener
 import paho.mqtt.client as mqtt
 
 
