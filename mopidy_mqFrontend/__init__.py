@@ -32,7 +32,7 @@ class Extension(ext.Extension):
     I have to admit this is a little confusing 
     The way is setup.py --> __init__.py --> Extension --> MainActor
     """
-    dist_name = 'Mopidy-mqFrontend'
+    dist_name = 'mopidy-mqFrontend'
     ext_name = 'mqFrontend'
     version = __version__
 
