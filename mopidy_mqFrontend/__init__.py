@@ -46,8 +46,8 @@ class Extension(ext.Extension):
         schema['host'] = config.Hostname()
         schema['port'] = config.Port()
 
-        schema['username'] = config.String()
-        schema['password'] = config.Secret()
+        #schema['username'] = config.String()
+        #schema['password'] = config.Secret()
         return schema
 
     def get_command(self):
