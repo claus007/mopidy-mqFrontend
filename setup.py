@@ -30,7 +30,7 @@ setup(
     ],
     entry_points={
         'mopidy.ext': [
-            'mqFrontend = mopidy_mqFrontend:Extension',
+            'mqfrontend = mopidy_mqFrontend:Extension',
         ],
     },
     classifiers=[

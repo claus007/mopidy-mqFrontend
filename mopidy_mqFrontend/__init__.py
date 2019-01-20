@@ -33,7 +33,7 @@ class Extension(ext.Extension):
     The way is setup.py --> __init__.py --> Extension --> MainActor
     """
     dist_name = 'mopidy-mqFrontend'
-    ext_name = 'mqFrontend'
+    ext_name = 'mqfrontend'
     version = __version__
 
     def get_default_config(self):
