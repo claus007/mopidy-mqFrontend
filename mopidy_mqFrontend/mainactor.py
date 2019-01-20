@@ -40,6 +40,6 @@ class MainActor(pykka.ThreadingActor):
         self.status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher')).start()
 
     def on_stop(self):
-        self.logger.info('Stopping MqFrontend')
+        self.logger.debug('Stopping MqFrontend')
         self.control.stop()
         self.status.stop()

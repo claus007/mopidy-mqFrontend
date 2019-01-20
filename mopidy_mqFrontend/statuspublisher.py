@@ -42,17 +42,17 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
 
         self.mosquitto_client.will_set(self.get_topic(), 'disconnected', 0, True)
 
-        self.logger.info('Starting Control Client / Connecting on %s:%d' % (host, port))
+        self.logger.debug('Starting Control Client / Connecting on %s:%d' % (host, port))
         self.mosquitto_client.connect(host, port)
 
     def on_stop(self):
         self.logger.debug('Stopping Client - disabling reconnection')
         self.mosquitto_client.on_disconnect = None
         self.mosquitto_client.disconnect()
-        self.logger.info('Client stopped')
+        self.logger.debug('Client stopped')
 
     def on_connect(self):
-        self.logger.debug('Connected')
+        self.logger.info('Connected')
 
     def on_disconnect(self):
         self.logger.info('DISConnected - Reconnecting...')
@@ -63,4 +63,4 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
         self.mosquitto_client.publish(self.get_topic(), event)
 
     def get_topic(self):
-        return "{{}}{{}}".format(self.config['topic'], 'status')
+        return "{}/{}".format(self.config['topic'], 'status')
