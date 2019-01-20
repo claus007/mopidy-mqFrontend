@@ -34,11 +34,12 @@ class MainActor(pykka.ThreadingActor):
         # import logger
         self.logger = logging.getLogger(__name__)
 
-    def on_start(self):
+    def on_start(self, *args, **kwargs):
         self.logger.info('Starting MqFrontend')
         control = ControlSubscriber(self.config, self.core, self.logger.getChild('ControlSubscriber'))
-        self.control=control.start()
-        self.status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher')).start()
+        self.control = control.start(*args, **kwargs)
+        status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher'))
+        self.status=status.start(*args, **kwargs)
 
     def on_stop(self):
         self.logger.debug('Stopping MqFrontend')
