@@ -30,11 +30,11 @@ class ControlSubscriber(pykka.ThreadingActor):
         self.config = config
         self.core = core
         self.logger = logger
-        self.mosquitto_client = paho.mqtt.client.Client()
 
     def on_start(self):
         host = self.config['host']
         port = self.config['port']
+        self.mosquitto_client = paho.mqtt.client.Client()
         self.mosquitto_client.on_connect = self.on_connect
         self.mosquitto_client.on_disconnect = self.on_disconnect
         self.mosquitto_client.on_message = self.on_mq_message

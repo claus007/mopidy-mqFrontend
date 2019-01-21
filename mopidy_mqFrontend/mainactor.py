@@ -44,3 +44,6 @@ class MainActor(pykka.ThreadingActor):
         self.logger.debug('Stopping MqFrontend')
         self.control.stop()
         self.status.stop()
+
+    def on_failure(self, exception_type, exception_value, traceback):
+        self.on_stop()
