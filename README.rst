@@ -38,9 +38,9 @@ Structure
 
 +Extension
    +Mainactor
-       +Statuspublisher
-            +EventTranslator
-       +ControlerSubscriber
+     +Statuspublisher
+     |  +EventTranslator
+     +ControlerSubscriber
 
 Project resources
 =================
