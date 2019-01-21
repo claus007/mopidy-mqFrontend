@@ -33,6 +33,14 @@ Parameters are:
 
     password    password (also empty)
 
+Structure
+=========
+
++Extension
+   +Mainactor
+       +Statuspublisher
+            +EventTranslator
+       +ControlerSubscriber
 
 Project resources
 =================
