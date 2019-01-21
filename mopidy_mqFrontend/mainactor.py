@@ -22,7 +22,6 @@ import pykka
 
 
 class MainActor(pykka.ThreadingActor):
-
     config = None  # type: dict
     status = None  # type: StatusPublisher
     control = None  # type: ControlSubscriber
@@ -31,15 +30,14 @@ class MainActor(pykka.ThreadingActor):
         super(MainActor, self).__init__()
         self.config = config
         self.core = core
-        # import logger
         self.logger = logging.getLogger(__name__)
+        self.control = None
+        self.status = None
 
     def on_start(self, *args, **kwargs):
         self.logger.info('Starting MqFrontend')
-        control = ControlSubscriber(self.config, self.core, self.logger.getChild('ControlSubscriber'))
-        self.control = control.start(*args, **kwargs)
-        status = StatusPublisher(self.config, self.core, self.logger.getChild('StatusPublisher'))
-        self.status=status.start(*args, **kwargs)
+        self.control = ControlSubscriber.start(self.config, self.core, self.logger.getChild('ControlSubscriber'))
+        self.status = StatusPublisher.start(self.config, self.core, self.logger.getChild('StatusPublisher'))
 
     def on_stop(self):
         self.logger.debug('Stopping MqFrontend')
