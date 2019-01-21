@@ -38,7 +38,6 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
         port = self.config['port']
         self.mosquitto_client.on_connect = self.on_connect
         self.mosquitto_client.on_disconnect = self.on_disconnect
-        self.mosquitto_client.on_message = self.on_mq_message
 
         self.mosquitto_client.will_set(self.get_topic(), 'disconnected', 0, True)
 
