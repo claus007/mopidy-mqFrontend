@@ -33,6 +33,7 @@ class MainActor(pykka.ThreadingActor):
         self.logger = logging.getLogger(__name__)
         self.control = None
         self.status = None
+        self.logger.debug("Config: %s" % self.config)
 
     def on_start(self, *args, **kwargs):
         self.logger.info('Starting MqFrontend')
