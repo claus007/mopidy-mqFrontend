@@ -28,7 +28,7 @@ class MainActor(pykka.ThreadingActor):
 
     def __init__(self, config, core):
         super(MainActor, self).__init__()
-        self.config = config
+        self.config = config[u'mqfrontend']
         self.core = core
         self.logger = logging.getLogger(__name__)
         self.control = None
