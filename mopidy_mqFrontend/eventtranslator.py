@@ -38,7 +38,7 @@ class EventTranslator:
         :param kwargs: any other arguments to the specific event handlers
         """
         try:
-            getattr(self, event)(**kwargs)
+            return getattr(self, event)(**kwargs)
         except Exception:
             # Ensure we don't crash the actor due to "bad" events.
             logger.exception(
@@ -55,7 +55,7 @@ class EventTranslator:
         :param time_position: the time position in milliseconds
         :type time_position: int
         """
-        result = [('state', 'paused'), ('time_position', time_position)]
+        result = [('state', 'paused')] # , ('time_position', time_position)]
 
         return result
 
@@ -70,7 +70,7 @@ class EventTranslator:
         :param time_position: the time position in milliseconds
         :type time_position: int
         """
-        result = [('state', 'resumed'), ('time_position', time_position)]
+        result = [('state', 'resumed')] # , ('time_position', time_position)]
 
         return result
 
@@ -83,7 +83,7 @@ class EventTranslator:
         :param tl_track: the track that just started playing
         :type tl_track: :class:`mopidy.models.TlTrack`
         """
-        result = [('state', 'started'), ('time_position', 0)]
+        result = [('state', 'started')] # , ('time_position', 0)]
         result.append(('track_name', tl_track.track.name))
         result.append(('track_genre', tl_track.track.genre))
 
@@ -100,7 +100,7 @@ class EventTranslator:
         :param time_position: the time position in milliseconds
         :type time_position: int
         """
-        result = [('state', 'ended'), ('time_position', time_position)]
+        result = [('state', 'ended')] #, ('time_position', time_position)]
 
         return result
 
@@ -117,7 +117,7 @@ class EventTranslator:
         """
         result = [('playback_state', new_state)]
 
-        self.keepAliveSpeakers = new_state == 'PLAYING'
+        self.keepAliveSpeakers = new_state == 'playing'
 
         return result
 
@@ -189,7 +189,7 @@ class EventTranslator:
         :param mute: the new mute state
         :type mute: boolean
         """
-        pass
+        result = [('mute', mute)]
 
     def seeked(self, time_position):
         """
