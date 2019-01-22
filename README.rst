@@ -25,7 +25,7 @@ Look at the license.
 
 So long - hope it helps you!
 
-Installation
+Running
 =========================
 
 Install by cloning:
@@ -37,14 +37,8 @@ Install by cloning:
 
     sudo python setup.py install
 
-
-Install by running: (may work in future ;-) )
-----------------------------------------------
-
-    sudo pip install Mopidy-MqFrontEnd
-
 Configuration
-=============
+-------------
 
 Parameters are:
 
@@ -56,13 +50,31 @@ Parameters are:
     
     port        port on host (default:1883)
 
+Testing
+=======
+
+If you did everything well you can test if everything works fine.
+(Assuming that most of the settings are defaults)
+
+Receiving messages from mopidy:
+
+    mosquitto_sub -v --topic mopidy/#
+
+Sending:
+
+    mosquitto_pub -v -m "play" -t mopidy/control
+
 Structure
 =========
 
 +Extension
+
    +Mainactor
+
      +Statuspublisher
+
         +EventTranslator
+
      +ControlerSubscriber
 
 Project resources
