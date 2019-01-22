@@ -12,7 +12,7 @@ The standard topic is mopidy but you can configure anything
 you want. There are different sub topics for the state changes and
 for controlling there is one sub topic called "control".
 
-Intension is an easy integration into home automation programs like openhab.
+Intention is an easy integration into home automation programs like openhab.
 
 Last but not least there is one message which you can use to keep your speaker
 turned on - it is send in an aquidistant intervall like a heratbeat.
@@ -25,10 +25,10 @@ Look at the license.
 
 So long - hope it helps you!
 
-Running
+Running on Ubuntu
 =========================
 
-Install by cloning:
+Get it
 -------------------
 
     git clone https://github.com/claus007/mopidy-mqFrontend.git
@@ -39,6 +39,9 @@ Install by cloning:
 
 Configuration
 -------------
+Edit section mqfrontend in mopidy.conf according to your settings with:
+
+    sudo vi /etc/mopidy/mopidy.conf
 
 Parameters are:
 
@@ -51,7 +54,8 @@ Parameters are:
     port        port on host (default:1883)
 
 Testing
-=======
+-------
+    sudo service mopidy restart
 
 If you did everything well you can test if everything works fine.
 (Assuming that most of the settings are defaults)
@@ -60,7 +64,7 @@ Receiving messages from mopidy:
 
     mosquitto_sub -v --topic mopidy/#
 
-Sending:
+Sending commands:
 
     mosquitto_pub -v -m "play" -t mopidy/control
 
