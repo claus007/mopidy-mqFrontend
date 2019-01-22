@@ -76,7 +76,7 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
         self.mosquitto_client.reconnect()
 
     def on_event(self, event, **kwargs):
-        self.logger.debug('Event: {{}}'.format(event))
+        self.logger.debug('Event: {}'.format(event))
         messages =self.event_translator.translate(event, **kwargs)
         if not messages:
             return
