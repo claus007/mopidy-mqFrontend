@@ -19,13 +19,19 @@ import paho.mqtt.client
 from mopidy.core.listener import CoreListener
 import paho.mqtt.client as mqtt
 from .eventtranslator import EventTranslator
+import time
 
 
 class StatusPublisher(pykka.ThreadingActor, CoreListener):
+    MOSQUITTO_TIMEOUT = 5.0 # type: float
+    MOSQUITTO_MAX_MSGS = 5 # type: int
+    SPEAKERS_KEEPALIVE_TIMEOUT = 30 : type int
     config = None  # type: dict
     core = None  # type: mopidy.core.Core
     mosquitto_client = None  # type: mqtt.Client
     event_translator = None  # type: EventTranslator
+    keep_alive_pause = 0 # type: int
+
 
     def __init__(self, config, core, logger, *args, **kwargs):
         super(StatusPublisher, self).__init__(*args, **kwargs)
@@ -54,13 +60,19 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
         self.mosquitto_client.disconnect()
         self.logger.debug('Client stopped')
 
-    def on_connect(self):
-        self.logger.info('Connected')
-        #needed for keep alive
-        self.in_future.do_work()
+    def on_connect(self,client, userdata, flags, rc):
+        if rc == 0:
+            self.logger.info('Connected')
+            # needed for keep alive
+            self.in_future.do_work()
+        else:
+            self.logger.info('connection refused')
+            time.sleep(5)
+            self.logger.info('trying to connect again')
+            self.mosquitto_client.reconnect()
 
     def on_disconnect(self):
-        self.logger.info('DISConnected - Reconnecting...')
+        self.logger.error('DISConnected - Reconnecting...')
         self.mosquitto_client.reconnect()
 
     def on_event(self, event, **kwargs):
@@ -72,5 +84,12 @@ class StatusPublisher(pykka.ThreadingActor, CoreListener):
         return "{}/{}".format(self.config['topic'], sub_topic)
 
     def do_work(self):
-        self.mosquitto_client.loop()
+        self.mosquitto_client.loop(self.MOSQUITTO_TIMEOUT,self.MOSQUITTO_MAX_MSGS)
+        self.keep_alive_pause = self.keep_alive_pause + self.MOSQUITTO_TIMEOUT
+
+        if self.keep_alive_pause > self.SPEAKERS_KEEPALIVE_TIMEOUT:
+            self.keep_alive_pause = 0
+            if self.event_translator.keepAliveSpeakers :
+                self.mosquitto_client.publish(self.get_topic('speakers_needed'), "True")
+
         self.in_future.do_work()

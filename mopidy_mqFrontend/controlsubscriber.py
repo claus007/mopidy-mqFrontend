@@ -15,6 +15,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import pykka
+import time
 import paho.mqtt.client
 
 
@@ -48,15 +49,22 @@ class ControlSubscriber(pykka.ThreadingActor):
         self.mosquitto_client.disconnect()
         self.logger.info('Client stopped')
 
-    def on_connect(self):
-        self.logger.info('Connected')
-        topic = "{0}/{1}".format(self.config['topic'], 'control')
-        self.logger.debug('Subscribing to {}'.format(topic))
-        self.mosquitto_client.subscribe(topic)
-        self.in_future.do_work()
+    def on_connect(self,client, userdata, flags, rc):
+        if rc == 0:
+            self.logger.info('Connected')
+            # needed for keep alive
+            topic = "{0}/{1}".format(self.config['topic'], 'control')
+            self.logger.debug('Subscribing to {}'.format(topic))
+            self.mosquitto_client.subscribe(topic)
+            self.in_future.do_work()
+        else:
+            self.logger.error('connection refused')
+            time.sleep(5)
+            self.logger.info('trying to connect again')
+            self.mosquitto_client.reconnect()
 
     def on_disconnect(self):
-        self.logger.info('DISConnected - Reconnecting...')
+        self.logger.error('DISConnected - Reconnecting...')
         self.mosquitto_client.reconnect()
 
     def on_mq_message(self, mqttc, obj, msg):

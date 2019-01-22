@@ -16,13 +16,17 @@ from __future__ import absolute_import, unicode_literals
 
 import logging
 
+from typing import Any, Union
+
 logger = logging.getLogger(__name__)
 
 
 class EventTranslator:
 
+    keepAliveSpeakers = None  # type: Union[bool, Any]
+
     def __init__(self):
-        pass
+        self.keepAliveSpeakers = False
 
     def translate(self, event, **kwargs):
         """
@@ -114,6 +118,8 @@ class EventTranslator:
         :type new_state: string from :class:`mopidy.core.PlaybackState` field
         """
         result = [('playback_state', new_state)]
+
+        self.keepAliveSpeakers = new_state == 'PLAYING'
 
         return result
 
