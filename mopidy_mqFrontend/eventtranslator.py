@@ -16,14 +16,12 @@ from __future__ import absolute_import, unicode_literals
 
 import logging
 
-from typing import Any, Union
-
 logger = logging.getLogger(__name__)
 
 
 class EventTranslator:
 
-    keepAliveSpeakers = None  # type: Union[bool, Any]
+    keepAliveSpeakers = None  # type: bool
 
     def __init__(self):
         self.keepAliveSpeakers = False
