@@ -2,19 +2,46 @@
 Mopidy-mqFrontend
 ******************
 
-Display the current playing options in an MQTT Broker.
+This is a bridge between mopidy and a mosquitto server.
 
+States where send out to mosquitto.
 
-Installation [for future]
+Mopidy listens on control commands. (not yet working)
+
+The standard topic is mopidy but you can configure anything
+you want. There are different sub topics for the state changes and
+for controlling there is one sub topic called "control".
+
+Intension is an easy integration into home automation programs like openhab.
+
+Last but not least there is one message which you can use to keep your speaker
+turned on - it is send in an aquidistant intervall like a heratbeat.
+
+Please, execuse me if I go not so deep into details but this extension
+is still under heavy development and many things will change...
+
+Nevertheless you can try it if you want to of course on your own risk.
+Look at the license.
+
+So long - hope it helps you!
+
+Installation
 =========================
 
-Install by running::
+Install by cloning:
+-------------------
+
+    git clone https://github.com/claus007/mopidy-mqFrontend.git
+
+    cd mopidy-mqFrontend
+
+    sudo python setup.py install
+
+
+Install by running: (may work in future ;-) )
+----------------------------------------------
 
     sudo pip install Mopidy-MqFrontEnd
-
-Or, if available, install the Debian/Ubuntu package from `apt.mopidy.com
-<http://apt.mopidy.com/>`_.
-
 
 Configuration
 =============
@@ -29,17 +56,13 @@ Parameters are:
     
     port        port on host (default:1883)
 
-    username    username (default empty)
-
-    password    password (also empty)
-
 Structure
 =========
 
 +Extension
    +Mainactor
      +Statuspublisher
-     |  +EventTranslator
+        +EventTranslator
      +ControlerSubscriber
 
 Project resources
