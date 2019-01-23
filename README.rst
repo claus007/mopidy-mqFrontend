@@ -15,7 +15,7 @@ for controlling there is one sub topic called "control".
 Intention is an easy integration into home automation programs like openhab.
 
 Last but not least there is one message which you can use to keep your speaker
-turned on - it is send in an aquidistant intervall like a heratbeat.
+turned on - it is send in an aquidistant interval like a heartbeat.
 
 Please, execuse me if I go not so deep into details but this extension
 is still under heavy development and many things will change...
