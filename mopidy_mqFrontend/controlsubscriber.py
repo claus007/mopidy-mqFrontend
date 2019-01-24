@@ -38,7 +38,7 @@ class ControlSubscriber(pykka.ThreadingActor):
         self.mosquitto_client = paho.mqtt.client.Client('mq_Frontend-ControlSubscriber')
         self.mosquitto_client.on_connect = self.on_connect
         self.mosquitto_client.on_disconnect = self.on_disconnect
-        #self.mosquitto_client.on_message = self.on_mq_message
+        self.mosquitto_client.on_message = self.on_mq_message
 
         self.logger.debug('Starting Control Client / Connecting on %s:%d' % (host, port))
         self.mosquitto_client.connect(host, port)
