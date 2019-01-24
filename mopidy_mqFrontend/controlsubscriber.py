@@ -56,8 +56,8 @@ class ControlSubscriber(pykka.ThreadingActor):
             # needed for keep alive
             topic = "{0}/{1}".format(self.config['topic'], 'control')
             self.logger.debug('Subscribing to {}'.format(topic))
-            (result, mid )=self.mosquitto_client.subscribe(topic)
-            if (result==MQTT_ERR_SUCCESS):
+            (result, mid) = self.mosquitto_client.subscribe(topic)
+            if result == paho.mqtt.client.MQTT_ERR_SUCCESS:
                 self.logger.info('Subscribed !')
             else:
                 self.logger.error('Not subscribed ErrorCode({})'.format(result))
