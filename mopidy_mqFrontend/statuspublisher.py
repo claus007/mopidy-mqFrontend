@@ -23,8 +23,8 @@ import time
 
 
 class StatusPublisher(pykka.ThreadingActor, CoreListener):
-    MOSQUITTO_TIMEOUT = 5.0  # type: float
-    MOSQUITTO_MAX_MSGS = 5  # type: int
+    MOSQUITTO_TIMEOUT = 1.0  # type: float
+    MOSQUITTO_MAX_MSGS = 1  # type: int
     SPEAKERS_KEEPALIVE_TIMEOUT = 30  # type: int
     config = None  # type: dict
     core = None  # type: mopidy.core.Core
