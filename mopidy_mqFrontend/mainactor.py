@@ -21,29 +21,18 @@ import logging
 import pykka
 
 
-class MainActor(pykka.ThreadingActor):
-    config = None  # type: dict
-    status = None  # type: StatusPublisher
-    control = None  # type: ControlSubscriber
+class MainActor(ControlSubscriber):
 
     def __init__(self, config, core):
-        super(MainActor, self).__init__()
-        self.config = config[u'mqfrontend']
-        self.core = core
-        self.logger = logging.getLogger(__name__)
-        self.control = None
-        self.status = None
+        logger = logging.getLogger(__name__)
+        super(MainActor, self).__init__(self,config[u'mqfrontend'],core,logger)
         self.logger.debug("Config: %s" % self.config)
 
-    def on_start(self, *args, **kwargs):
+    def on_start(self):
         self.logger.info('Starting MqFrontend')
-        self.control = ControlSubscriber.start(self.config, self.core, self.logger.getChild('ControlSubscriber'))
-        self.status = StatusPublisher.start(self.config, self.core, self.logger.getChild('StatusPublisher'))
 
     def on_stop(self):
-        self.logger.debug('Stopping MqFrontend')
-        self.control.stop()
-        self.status.stop()
+        self.logger.debug('Stopping MqFrontend...')
 
     def on_failure(self, exception_type, exception_value, traceback):
         self.on_stop()

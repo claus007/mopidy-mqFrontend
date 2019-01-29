@@ -19,60 +19,23 @@ import time
 import paho.mqtt.client
 
 
-class ControlSubscriber(pykka.ThreadingActor):
+class ControlSubscriber(StatusPublisher):
 
-    config = None  # type: dict
-    core = None  # type: mopidy.core.Core
-    mosquitto_client = None  # type: paho.mqtt.client.Client
+    def __init__(self):
+        super(ControlSubscriber, self).__init__(self)
 
-    def __init__(self, config, core, logger, *args, **kwargs):
-        super(ControlSubscriber, self).__init__(*args, **kwargs)
-        self.in_future = self.actor_ref.proxy()
-        self.config = config
-        self.core = core
-        self.logger = logger
+    def on_connected(self):
+		super(ControlSubscriber, self).on_connected(self)
+		topic = "{0}/{1}".format(self.config['topic'], 'control')
+		self.logger.debug('Subscribing to {}'.format(topic))
+		(result, mid) = self.mosquitto_client.subscribe(topic,2)
+		if result == paho.mqtt.client.MQTT_ERR_SUCCESS:
+			self.logger.info('Subscribed !')
+		else:
+			self.logger.error('Not subscribed ErrorCode({})'.format(result))
+		self.mosquitto_client.message_callback_add(topic, self.on_mq_control_message)
 
-    def on_start(self):
-        host = self.config['host']
-        port = self.config['port']
-        self.mosquitto_client = paho.mqtt.client.Client('mq_Frontend-ControlSubscriber')
-        self.mosquitto_client.on_connect = self.on_connect
-        self.mosquitto_client.on_disconnect = self.on_disconnect
-        self.mosquitto_client.on_message = self.on_mq_message
-
-        self.logger.debug('Starting Control Client / Connecting on %s:%d' % (host, port))
-        self.mosquitto_client.connect(host, port)
-        self.in_future.do_work()
-
-    def on_stop(self):
-        self.logger.debug('Stopping Client - disabling reconnection')
-        self.mosquitto_client.on_disconnect = None
-        self.mosquitto_client.disconnect()
-        self.logger.info('Client stopped')
-
-    def on_connect(self,client, userdata, flags, rc):
-        if rc == 0:
-            self.logger.info('Connected')
-            # needed for keep alive
-            topic = "{0}/{1}".format(self.config['topic'], 'control')
-            self.logger.debug('Subscribing to {}'.format(topic))
-            (result, mid) = self.mosquitto_client.subscribe(topic,2)
-            if result == paho.mqtt.client.MQTT_ERR_SUCCESS:
-                self.logger.info('Subscribed !')
-            else:
-                self.logger.error('Not subscribed ErrorCode({})'.format(result))
-            self.mosquitto_client.message_callback_add(topic, self.on_mq_message)
-        else:
-            self.logger.error('connection refused')
-            time.sleep(5)
-            self.logger.info('trying to connect again')
-            self.mosquitto_client.reconnect()
-
-    def on_disconnect(self):
-        self.logger.error('DISConnected - Reconnecting...')
-        self.mosquitto_client.reconnect()
-
-    def on_mq_message(self, mqttc, obj, msg):
+    def on_mq_control_message(self, mqttc, obj, msg):
         self.logger.info('Received msg: {}' % msg.payload)
         if msg.payload == 'stop':
             self.core.playlist.stop()
@@ -84,6 +47,3 @@ class ControlSubscriber(pykka.ThreadingActor):
             self.core.playlist.stop()
             return
 
-    def do_work(self):
-        self.mosquitto_client.loop()
-        self.in_future.do_work()
