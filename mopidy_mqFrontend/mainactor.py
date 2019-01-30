@@ -30,6 +30,7 @@ class MainActor(ControlSubscriber):
 
     def on_start(self):
         self.logger.info('Starting MqFrontend')
+        super(MainActor, self).on_start()
 
     def on_stop(self):
         self.logger.debug('Stopping MqFrontend...')
