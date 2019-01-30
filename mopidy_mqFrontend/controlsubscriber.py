@@ -36,7 +36,7 @@ class ControlSubscriber(StatusPublisher):
         self.mosquitto_client.message_callback_add(topic, self.on_mq_control_message)
 
     def on_mq_control_message(self, mqttc, obj, msg):
-        self.logger.info('Received msg: {}' % msg.payload)
+        self.logger.info('Received msg: %s' % msg.payload)
         if msg.payload == 'stop':
             self.core.playlist.stop()
             return
