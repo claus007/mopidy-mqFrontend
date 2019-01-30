@@ -25,7 +25,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
     event_translator = None  # type: EventTranslator
 
     def __init__(self):
-        super(StatusPublisher, self).__init__(self)
+        super(StatusPublisher, self).__init__()
 
     def on_connected(self):
         super(StatusPublisher, self).on_connected(self)

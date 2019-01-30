@@ -22,7 +22,7 @@ from mopidy_mqFrontend.statuspublisher import StatusPublisher
 class ControlSubscriber(StatusPublisher):
 
     def __init__(self):
-        super(ControlSubscriber, self).__init__(self)
+        super(ControlSubscriber, self).__init__()
 
     def on_connected(self):
         super(ControlSubscriber, self).on_connected(self)

@@ -25,7 +25,7 @@ class MosquittoClientBase(pykka.ThreadingActor):
     logger = None
 
     def __init__(self):
-        super(MosquittoClientBase, self).__init__(self)
+        super(MosquittoClientBase, self).__init__()
         self.in_future = self.actor_ref.proxy()
 
     def on_start(self):
