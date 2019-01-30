@@ -75,3 +75,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
 
     def send_keep_alive(self):
         self.mosquitto_client.publish(self.get_topic("speakers_needed"), True)
+
+    def on_stop(self):
+        super( StatusPublisher, self).on_stop()
+        self.keep_alive.stop()
