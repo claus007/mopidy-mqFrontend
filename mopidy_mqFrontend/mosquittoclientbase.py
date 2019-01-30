@@ -14,13 +14,14 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from mopidy.core import Core
 import paho.mqtt.client
 import pykka
 
 
 class MosquittoClientBase(pykka.ThreadingActor):
     config = None  # type: dict
-    core = None  # type: mopidy.core.Core
+    core = None  # type: Core
     mosquitto_client = None  # type: paho.mqtt.client.Client
     logger = None
 

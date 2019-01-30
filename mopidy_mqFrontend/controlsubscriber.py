@@ -38,11 +38,9 @@ class ControlSubscriber(StatusPublisher):
     def on_mq_control_message(self, mqttc, obj, msg):
         self.logger.info('Received msg: %s' % msg.payload)
         if msg.payload == 'stop':
-            self.core.playlist.stop()
+            self.core.stop()
             return
         if msg.payload == 'start':
-            self.core.playlist.start()
+            self.core.start()
             return
-        if msg.payload == 'stop':
-            self.core.playlist.stop()
-            return
+
