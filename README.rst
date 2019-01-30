@@ -71,15 +71,13 @@ Sending commands:
 Structure
 =========
 
-+Extension
+I changed the structure drastically.
+Instead of owning I turned to inheritance.
+So:
 
-   +Mainactor
+Extension produces:
 
-     +Statuspublisher
-
-        +EventTranslator
-
-     +ControlerSubscriber
+   MainActor -> ControlerSubscriber -> Statuspublisher -> MosquittoClientBase -> pykka.ThreadingActor
 
 Project resources
 =================
