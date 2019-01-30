@@ -77,7 +77,11 @@ So:
 
 Extension produces:
 
-   MainActor -> ControlerSubscriber -> Statuspublisher -> MosquittoClientBase -> pykka.ThreadingActor
+   MainActor
+        -> ControlSubscriber
+                -> Statuspublisher
+                        -> MosquittoClientBase
+                                -> pykka.ThreadingActor
 
 Project resources
 =================
