@@ -14,12 +14,10 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import pykka
-import paho.mqtt.client
 from mopidy.core.listener import CoreListener
-import paho.mqtt.client as mqtt
+
+from mopidy_mqFrontend.mosquittoclientbase import MosquittoClientBase
 from .eventtranslator import EventTranslator
-import time
 
 
 class StatusPublisher(MosquittoClientBase, CoreListener):

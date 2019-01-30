@@ -14,9 +14,9 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import pykka
-import time
 import paho.mqtt.client
+
+from mopidy_mqFrontend.statuspublisher import StatusPublisher
 
 
 class ControlSubscriber(StatusPublisher):
@@ -28,7 +28,7 @@ class ControlSubscriber(StatusPublisher):
         super(ControlSubscriber, self).on_connected(self)
         topic = "{0}/{1}".format(self.config['topic'], 'control')
         self.logger.debug('Subscribing to {}'.format(topic))
-        (result, mid) = self.mosquitto_client.subscribe(topic,2)
+        (result, mid) = self.mosquitto_client.subscribe(topic, 2)
         if result == paho.mqtt.client.MQTT_ERR_SUCCESS:
             self.logger.info('Subscribed !')
         else:
@@ -46,4 +46,3 @@ class ControlSubscriber(StatusPublisher):
         if msg.payload == 'stop':
             self.core.playlist.stop()
             return
-
