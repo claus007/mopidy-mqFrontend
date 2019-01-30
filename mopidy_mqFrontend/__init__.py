@@ -20,7 +20,7 @@ import os
 from mopidy import config, exceptions, ext
 
 
-__version__ = '0.24'
+__version__ = '0.25'
 
 # If you need to log, use loggers named after the current Python module
 logger = logging.getLogger(__name__)

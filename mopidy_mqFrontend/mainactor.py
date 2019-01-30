@@ -25,7 +25,9 @@ class MainActor(ControlSubscriber):
 
     def __init__(self, config, core):
         logger = logging.getLogger(__name__)
-        super(MainActor, self).__init__(self,config[u'mqfrontend'],core,logger)
+        self.config=config[u'mqfrontend']
+        self.core=core
+        super(MainActor, self).__init__(self)
         self.logger.debug("Config: %s" % self.config)
 
     def on_start(self):

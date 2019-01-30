@@ -30,7 +30,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
         super(StatusPublisher, self).__init__(self)
 
     def on_connected(self):
-		super(StatusPublisher, self).on_connected(self)
+        super(StatusPublisher, self).on_connected(self)
         self.event_translator = EventTranslator()
         self.mosquitto_client.publish(self.get_topic('status'), 'connected')
 
