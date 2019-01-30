@@ -22,9 +22,9 @@ import logging
 class MainActor(ControlSubscriber):
 
     def __init__(self, config, core):
-        logger = logging.getLogger(__name__)
-        self.config=config[u'mqfrontend']
-        self.core=core
+        self.logger = logging.getLogger(__name__)
+        self.config = config[u'mqfrontend']
+        self.core = core
         super(MainActor, self).__init__()
         self.logger.debug("Config: %s" % self.config)
 
