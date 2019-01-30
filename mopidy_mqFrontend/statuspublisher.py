@@ -15,17 +15,49 @@
 from __future__ import absolute_import, unicode_literals
 
 from mopidy.core.listener import CoreListener
+from threading import Thread
+import time
 
 from mopidy_mqFrontend.mosquittoclientbase import MosquittoClientBase
 from .eventtranslator import EventTranslator
 
 
+class KeepAlive(Thread):
+    running = False
+    call_every = 6000
+    time = 0
+    func = None
+    active = False
+
+    def __init__(self, interval, func):
+        super(KeepAlive, self).__init__()
+        self.call_every = interval
+        self.func = func
+
+    def run(self):
+        self.time = 0
+        self.running = True
+        while self.running:
+            time.sleep(1)
+            self.time = self.time + 1
+            if self.time > self.call_every:
+                self.time = self.time - self.call_every
+                if self.active:
+                    self.func()
+
+    def stop(self):
+        self.running = False
+
+
 class StatusPublisher(MosquittoClientBase, CoreListener):
     SPEAKERS_KEEPALIVE_TIMEOUT = 30  # type: int
     event_translator = None  # type: EventTranslator
+    keep_alive = None
 
     def __init__(self):
         super(StatusPublisher, self).__init__()
+        self.keep_alive = KeepAlive(30, self.send_keep_alive)
+        self.keep_alive.start()
 
     def on_connected(self):
         super(StatusPublisher, self).on_connected()
@@ -35,7 +67,11 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
     def on_event(self, event, **kwargs):
         self.logger.debug('Event: {}'.format(event))
         messages = self.event_translator.translate(event, **kwargs)
+        self.keep_alive.active = self.event_translator.keepAliveSpeakers
         if not messages:
             return
         for message in messages:
             self.mosquitto_client.publish(self.get_topic(message[0]), message[1])
+
+    def send_keep_alive(self):
+        self.mosquitto_client.publish(self.get_topic("speakers_needed"), True)
