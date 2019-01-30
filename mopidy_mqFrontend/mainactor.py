@@ -15,10 +15,8 @@
 from __future__ import absolute_import, unicode_literals
 
 from .controlsubscriber import ControlSubscriber
-from .statuspublisher import StatusPublisher
 
 import logging
-import pykka
 
 
 class MainActor(ControlSubscriber):
@@ -27,7 +25,7 @@ class MainActor(ControlSubscriber):
         logger = logging.getLogger(__name__)
         self.config=config[u'mqfrontend']
         self.core=core
-        super(MainActor, self).__init__(self)
+        super(MainActor, self).__init__()
         self.logger.debug("Config: %s" % self.config)
 
     def on_start(self):
