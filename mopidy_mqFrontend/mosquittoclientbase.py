@@ -69,3 +69,9 @@ class MosquittoClientBase(pykka.ThreadingActor):
 
     def get_topic(self, sub_topic):
         return "{}/{}".format(self.config['topic'], sub_topic)
+
+    def on_publish_callback(self,client, userdata, mid):
+        pass
+
+    def subscribe_callback(self, client, userdata, mid, granted_qos):
+        pass

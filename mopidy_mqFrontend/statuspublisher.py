@@ -28,13 +28,13 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
         super(StatusPublisher, self).__init__()
 
     def on_connected(self):
-        super(StatusPublisher, self).on_connected(self)
+        super(StatusPublisher, self).on_connected()
         self.event_translator = EventTranslator()
         self.mosquitto_client.publish(self.get_topic('status'), 'connected')
 
     def on_event(self, event, **kwargs):
         self.logger.debug('Event: {}'.format(event))
-        messages =self.event_translator.translate(event, **kwargs)
+        messages = self.event_translator.translate(event, **kwargs)
         if not messages:
             return
         for message in messages:
