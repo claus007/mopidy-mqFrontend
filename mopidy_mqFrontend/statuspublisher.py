@@ -27,12 +27,23 @@ class KeepAlive(Thread):
     call_every = 6000
     time = 0
     func = None
-    active = False
+    __active = False
 
     def __init__(self, interval, func):
         super(KeepAlive, self).__init__()
         self.call_every = interval
         self.func = func
+
+    @property
+    def active(self):
+        """ activated """
+        return self.__active
+
+    @active.setter
+    def active(self, state):
+        self.__active = state
+        if state:
+            self.func()
 
     def run(self):
         self.time = 0
@@ -42,7 +53,7 @@ class KeepAlive(Thread):
             self.time = self.time + 1
             if self.time > self.call_every:
                 self.time = self.time - self.call_every
-                if self.active:
+                if self.__active:
                     self.func()
 
     def stop(self):
@@ -77,5 +88,5 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
         self.mosquitto_client.publish(self.get_topic("speakers_needed"), True)
 
     def on_stop(self):
-        super( StatusPublisher, self).on_stop()
+        super(StatusPublisher, self).on_stop()
         self.keep_alive.stop()
