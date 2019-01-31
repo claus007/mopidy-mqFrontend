@@ -44,6 +44,7 @@ class KeepAlive(Thread):
         self.__active = state
         if state:
             self.func()
+            self.time = 0
 
     def run(self):
         self.time = 0
