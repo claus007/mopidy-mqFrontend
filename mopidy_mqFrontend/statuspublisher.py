@@ -15,50 +15,11 @@
 from __future__ import absolute_import, unicode_literals
 
 from mopidy.core.listener import CoreListener
-from threading import Thread
-import time
+
 
 from mopidy_mqFrontend.mosquittoclientbase import MosquittoClientBase
 from .eventtranslator import EventTranslator
-
-
-class KeepAlive(Thread):
-    running = False
-    call_every = 6000
-    time = 0
-    func = None
-    __active = False
-
-    def __init__(self, interval, func):
-        super(KeepAlive, self).__init__()
-        self.call_every = interval
-        self.func = func
-
-    @property
-    def active(self):
-        """ activated """
-        return self.__active
-
-    @active.setter
-    def active(self, state):
-        self.__active = state
-        if state:
-            self.func()
-            self.time = 0
-
-    def run(self):
-        self.time = 0
-        self.running = True
-        while self.running:
-            time.sleep(1)
-            self.time = self.time + 1
-            if self.time > self.call_every:
-                self.time = self.time - self.call_every
-                if self.__active:
-                    self.func()
-
-    def stop(self):
-        self.running = False
+from .keepalive import KeepAlive
 
 
 class StatusPublisher(MosquittoClientBase, CoreListener):
@@ -68,7 +29,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
 
     def __init__(self):
         super(StatusPublisher, self).__init__()
-        self.keep_alive = KeepAlive(30, self.send_keep_alive)
+        self.keep_alive = KeepAlive(SPEAKERS_KEEPALIVE_TIMEOUT, self.send_keep_alive)
         self.keep_alive.start()
 
     def on_connected(self):
