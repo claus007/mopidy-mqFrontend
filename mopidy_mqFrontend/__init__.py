@@ -44,7 +44,8 @@ class Extension(ext.Extension):
 # for more info
 
 [mqFrontend]
-        '''
+enable=True
+'''
         conf_definition = get_config_definition()
         for item in conf_definition:
             result = result + '\n# '
