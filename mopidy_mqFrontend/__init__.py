@@ -37,8 +37,20 @@ class Extension(ext.Extension):
     version = __version__
 
     def get_default_config(self):
-        conf_file = os.path.join(os.path.dirname(__file__), 'ext.conf')
-        return config.read(conf_file)
+        result = '''
+        #this file is automatically created once
+        # please seee configdefintition file
+        # or https://github.com/claus007/mopidy-mqFrontend/blob/master/mopidy_mqFrontend/configdefinition.py
+        # for more info
+        
+        [mqFrontend]
+        '''
+        conf_definition = get_config_definition()
+        for item in conf_definition:
+            result = result + '\n# '
+            result = result + item[3]
+            result = result + ("\n%s=%s\n" % (item[0], item[2]))
+        return result
 
     def get_config_schema(self):
         schema = super(Extension, self).get_config_schema()
