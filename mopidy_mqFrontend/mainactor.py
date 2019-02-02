@@ -46,6 +46,8 @@ class MainActor(ControlSubscriber):
 
     def on_stop(self):
         self.logger.debug('Stopping MqFrontend...')
+        super(MainActor, self).on_stop()
+        self.logger.info("mqFrontend completely stopped")
 
     def on_failure(self, exception_type, exception_value, traceback):
         self.on_stop()
