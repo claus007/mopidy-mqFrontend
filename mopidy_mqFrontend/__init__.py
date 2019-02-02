@@ -38,12 +38,12 @@ class Extension(ext.Extension):
 
     def get_default_config(self):
         result = '''
-        #this file is automatically created once
-        # please seee configdefintition file
-        # or https://github.com/claus007/mopidy-mqFrontend/blob/master/mopidy_mqFrontend/configdefinition.py
-        # for more info
-        
-        [mqFrontend]
+#this file is automatically created once
+# please seee configdefintition file
+# or https://github.com/claus007/mopidy-mqFrontend/blob/master/mopidy_mqFrontend/configdefinition.py
+# for more info
+
+[mqFrontend]
         '''
         conf_definition = get_config_definition()
         for item in conf_definition:
