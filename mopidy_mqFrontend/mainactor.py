@@ -15,6 +15,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from .controlsubscriber import ControlSubscriber
+from mopidy_mqFrontend.configdefinition import get_config_definition
 
 import logging
 
@@ -24,6 +25,17 @@ class MainActor(ControlSubscriber):
     def __init__(self, config, core):
         self.logger = logging.getLogger(__name__)
         self.config = config[u'mqfrontend']
+
+        for item in get_config_definition():
+            if self.config.has_key(item[0]):
+                value = self.config[item[0]]
+                if_default = "config"
+            else:
+                value = item[2]
+                if_default = 'default'
+            self.logger.info("%15s = %-15s (%s): %s" % (item[0], value, if_default, item[3]))
+            self.config[item[0]] = value
+
         self.core = core
         super(MainActor, self).__init__()
         self.logger.debug("Config: %s" % self.config)

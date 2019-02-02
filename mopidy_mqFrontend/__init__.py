@@ -16,9 +16,8 @@ from __future__ import absolute_import, unicode_literals
 
 import logging
 import os
-
+from mopidy_mqFrontend.configdefinition import get_config_definition
 from mopidy import config, exceptions, ext
-import .configdefinition
 
 __version__ = '0.25'
 
@@ -42,9 +41,9 @@ class Extension(ext.Extension):
 
     def get_config_schema(self):
         schema = super(Extension, self).get_config_schema()
-        conf_definition=configdefinition.getConfigDefinition()
+        conf_definition = get_config_definition()
         for item in conf_definition:
-            schema[item[0]]=item[1]
+            schema[item[0]] = item[1]
         return schema
 
     def get_command(self):

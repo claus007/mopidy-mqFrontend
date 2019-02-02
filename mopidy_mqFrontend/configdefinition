@@ -17,7 +17,7 @@ from __future__ import absolute_import, unicode_literals
 from mopidy import config
 
 
-def getConfigDefinition():
+def get_config_definition():
     config_definition = [['topic', config.String(True), 'mopidy', 'Mosquitto Main topic'],
                          ['client_id', config.String(True), 'mopidy-mqFrontend', 'Client Id as shown in Mosquitto'],
                          ['host', config.Hostname(True), 'localhost', 'Mosquitto host'],
