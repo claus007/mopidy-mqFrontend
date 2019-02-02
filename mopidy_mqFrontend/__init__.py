@@ -16,8 +16,9 @@ from __future__ import absolute_import, unicode_literals
 
 import logging
 import os
+
+from mopidy import config, ext
 from mopidy_mqFrontend.configdefinition import get_config_definition
-from mopidy import config, exceptions, ext
 
 __version__ = '0.26'
 
