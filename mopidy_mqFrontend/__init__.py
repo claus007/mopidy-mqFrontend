@@ -43,8 +43,8 @@ class Extension(ext.Extension):
 # or https://github.com/claus007/mopidy-mqFrontend/blob/master/mopidy_mqFrontend/configdefinition.py
 # for more info
 
-[mqFrontend]
-enable=True
+[mqfrontend]
+enabled=True
 '''
         conf_definition = get_config_definition()
         for item in conf_definition:
