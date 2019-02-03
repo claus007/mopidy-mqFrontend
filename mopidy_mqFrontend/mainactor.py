@@ -27,7 +27,7 @@ class MainActor(ControlSubscriber):
         self.config = config[u'mqfrontend']
 
         for item in get_config_definition():
-            if self.config.has_key(item[0]):
+            if item[0] in self.config:
                 value = self.config[item[0]]
                 if_default = "config"
             else:
