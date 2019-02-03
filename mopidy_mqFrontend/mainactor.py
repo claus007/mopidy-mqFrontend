@@ -24,10 +24,11 @@ class MainActor(ControlSubscriber):
 
     def __init__(self, config, core):
         self.logger = logging.getLogger(__name__)
-        self.config = config[u'mqfrontend']
+        self.config = {}
+        my_config=config[u'mqfrontend']
 
         for item in get_config_definition():
-            if item[0] in self.config:
+            if item[0] in my_config:
                 value = self.config[item[0]]
                 if_default = "config"
             else:
