@@ -44,11 +44,11 @@ Edit section mqfrontend in mopidy.conf according to your settings with:
 >    sudo vi /etc/mopidy/mopidy.conf
 
 For exact parameter description see: [Parameters.txt](docs/parameters.txt) or run:
-'''
+```
 import mopidy_mqFrontend.configdefinition
 a=mopidy_mqFrontend.configdefinition.parameters_help()
 print a
-'''
+```
 
 Testing
 -------
