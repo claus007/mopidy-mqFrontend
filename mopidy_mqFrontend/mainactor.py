@@ -34,7 +34,7 @@ class MainActor(ControlSubscriber):
             else:
                 value = item[2]
                 if_default = 'default'
-            self.logger.info("%15s = %-15s (%s): %s" % (item[0], value, if_default, item[3]))
+            self.logger.debug("%15s = %-15s (%s): %s" % (item[0], value, if_default, item[3]))
             self.config[item[0]] = value
 
         self.core = core
