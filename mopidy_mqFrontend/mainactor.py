@@ -29,7 +29,7 @@ class MainActor(ControlSubscriber):
 
         for item in get_config_definition():
             if item[0] in my_config:
-                value = self.config[item[0]]
+                value = my_config[item[0]]
                 if_default = "config"
             else:
                 value = item[2]
