@@ -41,17 +41,13 @@ Configuration
 -------------
 Edit section mqfrontend in mopidy.conf according to your settings with:
 
-    sudo vi /etc/mopidy/mopidy.conf
+>    sudo vi /etc/mopidy/mopidy.conf
 
-Parameters are:
+For exact parameter description see: [Parameters.txt](docs/parameters.txt) or run:
 
-    enable      true if extension is enabled
-    
-    path        topic under which this control is published (default: mopidy)
-    
-    host        host to connect to (default: localhost)
-    
-    port        port on host (default:1883)
+>   import mopidy_mqFrontend.configdefinition
+>   a=mopidy_mqFrontend.configdefinition.parameters_help()
+>   print a
 
 Testing
 -------
