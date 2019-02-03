@@ -70,7 +70,7 @@ class EventTranslator:
         :param time_position: the time position in milliseconds
         :type time_position: int
         """
-        result = [('state', 'resumed')] # , ('time_position', time_position)]
+        result = [('state', 'playing')] # , ('time_position', time_position)]
 
         return result
 
@@ -83,9 +83,10 @@ class EventTranslator:
         :param tl_track: the track that just started playing
         :type tl_track: :class:`mopidy.models.TlTrack`
         """
-        result = [('state', 'started')] # , ('time_position', 0)]
-        result.append(('track_name', tl_track.track.name))
-        result.append(('track_genre', tl_track.track.genre))
+        result = [('state', 'playing'),
+                  ('track_name', tl_track.track.name),
+                  ('track_genre', tl_track.track.genre)
+                  ]  # , ('time_position', 0)]
 
         return result
 
@@ -100,7 +101,7 @@ class EventTranslator:
         :param time_position: the time position in milliseconds
         :type time_position: int
         """
-        result = [('state', 'ended')] #, ('time_position', time_position)]
+        result = [('state', 'stopped')] #, ('time_position', time_position)]
 
         return result
 
@@ -190,6 +191,8 @@ class EventTranslator:
         :type mute: boolean
         """
         result = [('mute', mute)]
+
+        return result
 
     def seeked(self, time_position):
         """

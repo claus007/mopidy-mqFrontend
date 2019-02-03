@@ -16,7 +16,6 @@ from __future__ import absolute_import, unicode_literals
 
 from mopidy.core.listener import CoreListener
 
-
 from mopidy_mqFrontend.mosquittoclientbase import MosquittoClientBase
 from .eventtranslator import EventTranslator
 from .keepalive import KeepAlive
@@ -34,7 +33,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
     def on_connected(self):
         super(StatusPublisher, self).on_connected()
         self.event_translator = EventTranslator()
-        self.mosquitto_client.publish(self.get_topic('status'), 'connected')
+        self.mosquitto_client.publish(self.get_topic('status'), 'connected', 0, True)
 
     def on_event(self, event, **kwargs):
         self.logger.debug('Event: {}'.format(event))
@@ -46,7 +45,8 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
             self.mosquitto_client.publish(self.get_topic(message[0]), message[1])
 
     def send_keep_alive(self):
-        self.mosquitto_client.publish(self.config['speaker_keep_alive_topic'], self.config['speaker_keep_alive_payload'])
+        self.mosquitto_client.publish(self.config['speaker_keep_alive_topic'],
+                                      self.config['speaker_keep_alive_payload'])
 
     def on_stop(self):
         super(StatusPublisher, self).on_stop()

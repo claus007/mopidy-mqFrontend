@@ -1,0 +1,12 @@
+Parameters:
+                         topic = mopidy                    : Mosquitto Main topic
+                     client_id = mopidy-mqFrontend         : Client Id as shown in Mosquitto
+                          host = localhost                 : Mosquitto host
+                          port = 1883                      : Mosquitto port
+                    keep_alive = 60                        : Keep alive for Mosquitto protocol
+               reconnect_after = 15                        : If connect lost reconnect after X seconds
+                      username =                           : User name if needed
+                      password =                           : Password if needed
+   speaker_keep_alive_interval = 30                        : Keep alive for interval for speakers - zero to disable
+      speaker_keep_alive_topic = mopidy/speakers_needed    : Topic to send keep speakers alive
+    speaker_keep_alive_payload = True                      : payload of speakers keep alive message

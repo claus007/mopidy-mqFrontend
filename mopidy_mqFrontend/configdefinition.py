@@ -37,3 +37,9 @@ def get_config_definition():
                                                                                    'message']]
 
     return config_definition
+
+def parameters_help():
+    result="Parameters:\n"
+    for item in get_config_definition():
+        result= result +("%30s = %-25s : %s\n" % (item[0], item[2], item[3]))
+    return result
