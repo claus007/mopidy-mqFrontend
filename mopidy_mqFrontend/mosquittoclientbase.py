@@ -17,6 +17,7 @@ from __future__ import absolute_import, unicode_literals
 from mopidy.core import Core
 import paho.mqtt.client
 import pykka
+import time
 
 
 class MosquittoClientBase(pykka.ThreadingActor):
@@ -32,7 +33,9 @@ class MosquittoClientBase(pykka.ThreadingActor):
     def on_start(self):
         host = self.config['host']
         port = self.config['port']
-        self.mosquitto_client = paho.mqtt.client.Client('Mopidy_Interface')
+        self.mosquitto_client = paho.mqtt.client.Client(self.config['client_id'], True)
+        if self.config['username']:
+            self.mosquitto_client.username_pw_set(self.config['username'], self.config['password'])
         self.mosquitto_client.on_connect = self.on_connect
         self.mosquitto_client.on_disconnect = self.on_disconnect
         self.mosquitto_client.on_message = self.on_mq_message
@@ -54,7 +57,7 @@ class MosquittoClientBase(pykka.ThreadingActor):
             self.on_connected()
         else:
             self.logger.error('Connection refused')
-            time.sleep(5)
+            time.sleep(self.config['reconnect_after'])
             self.logger.info('Trying to connect again...')
             self.mosquitto_client.reconnect()
 
@@ -71,7 +74,7 @@ class MosquittoClientBase(pykka.ThreadingActor):
     def get_topic(self, sub_topic):
         return "{}/{}".format(self.config['topic'], sub_topic)
 
-    def on_publish_callback(self,client, userdata, mid):
+    def on_publish_callback(self, client, userdata, mid):
         pass
 
     def subscribe_callback(self, client, userdata, mid, granted_qos):

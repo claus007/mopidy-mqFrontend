@@ -23,13 +23,12 @@ from .keepalive import KeepAlive
 
 
 class StatusPublisher(MosquittoClientBase, CoreListener):
-    SPEAKERS_KEEPALIVE_TIMEOUT = 30  # type: int
     event_translator = None  # type: EventTranslator
     keep_alive = None
 
     def __init__(self):
         super(StatusPublisher, self).__init__()
-        self.keep_alive = KeepAlive(SPEAKERS_KEEPALIVE_TIMEOUT, self.send_keep_alive)
+        self.keep_alive = KeepAlive(self.config['speaker_keep_alive_interval'], self.send_keep_alive)
         self.keep_alive.start()
 
     def on_connected(self):
@@ -47,7 +46,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
             self.mosquitto_client.publish(self.get_topic(message[0]), message[1])
 
     def send_keep_alive(self):
-        self.mosquitto_client.publish(self.get_topic("speakers_needed"), True)
+        self.mosquitto_client.publish(self.config['speaker_keep_alive_topic'], self.config['speaker_keep_alive_payload'])
 
     def on_stop(self):
         super(StatusPublisher, self).on_stop()
