@@ -22,7 +22,7 @@ def get_config_definition():
                          ['client_id', config.String(True), 'mopidy-mqFrontend', 'Client Id as shown in Mosquitto'],
                          ['host', config.Hostname(True), 'localhost', 'Mosquitto host'],
                          ['port', config.Port(optional=True), 1883, 'Mosquitto port'],
-                         ['keepAlive', config.Integer(optional=True), 60, 'Keep alive for Mosquitto protocol'],
+                         ['keep_alive', config.Integer(optional=True), 60, 'Keep alive for Mosquitto protocol'],
                          ['reconnect_after', config.Integer(optional=True), 15,
                           'If connect lost reconnect after X seconds'],
                          ['username', config.String(True), None, 'User name if needed'],
