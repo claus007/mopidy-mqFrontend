@@ -20,7 +20,7 @@ import os
 from mopidy import config, ext
 from mopidy_mqFrontend.configdefinition import get_config_definition
 
-__version__ = '0.29'
+__version__ = '0.70'
 
 # If you need to log, use loggers named after the current Python module
 logger = logging.getLogger(__name__)
