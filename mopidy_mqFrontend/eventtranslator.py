@@ -135,7 +135,7 @@ class EventTranslator:
         """
         pass
 
-    def __send_playlist_update(self):
+    def get_playlist_update(self):
         result = ""
         playlists = self.core.playlists.as_list()
         for playlist in playlists.get():
@@ -150,7 +150,7 @@ class EventTranslator:
 
         *MAY* be implemented by actor.
         """
-        self.__send_playlist_update()
+        self.get_playlist_update()
 
     def playlist_changed(self, playlist):
         """
@@ -161,7 +161,7 @@ class EventTranslator:
         :param playlist: the changed playlist
         :type playlist: :class:`mopidy.models.Playlist`
         """
-        self.__send_playlist_update()
+        self.get_playlist_update()
 
     def playlist_deleted(self, uri):
         """
@@ -172,7 +172,7 @@ class EventTranslator:
         :param uri: the URI of the deleted playlist
         :type uri: string
         """
-        self.__send_playlist_update()
+        self.get_playlist_update()
 
     def options_changed(self):
         """

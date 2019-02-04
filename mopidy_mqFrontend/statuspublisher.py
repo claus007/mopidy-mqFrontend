@@ -35,6 +35,10 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
         self.event_translator = EventTranslator(self.core)
         self.mosquitto_client.publish(self.get_topic('status'), 'connected', 0, True)
 
+        messages = self.event_translator.get_playlist_update()
+        for message in messages:
+            self.mosquitto_client.publish(self.get_topic(message[0]), message[1])
+
     def on_event(self, event, **kwargs):
         self.logger.debug('Event: {}'.format(event))
         messages = self.event_translator.translate(event, **kwargs)
