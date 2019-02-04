@@ -6,21 +6,24 @@ This is a bridge between mopidy and a mosquitto server.
 
 States where send out to mosquitto.
 
-Mopidy listens on control commands. (not yet working)
-
-The standard topic is mopidy but you can configure anything
-you want. There are different sub topics for the state changes and
-for controlling there is one sub topic called "control".
+Mopidy listens on control commands.
 
 Intention is an easy integration into home automation programs like openhab.
+
+Therefore you *can*:
+    * Start/Stop/Pause playback
+    * Play playlist
+    
+Therfore you *can't*:
+    * Edit/Modify playlists/tracklist
 
 Last but not least there is one message which you can use to keep your speaker
 turned on - it is send in an aquidistant interval like a heartbeat.
 
 Please, execuse me if I go not so deep into details but this extension
-is still under heavy development and many things will change...
+is still under development and some things may change...
 
-Nevertheless you can try it if you want to of course on your own risk.
+Nevertheless you can try it !
 Look at the license.
 
 So long - hope it helps you!
@@ -34,6 +37,8 @@ Get it
     git clone https://github.com/claus007/mopidy-mqFrontend.git
 
     cd mopidy-mqFrontend
+    
+    sudo service mopidy stop
 
     sudo python setup.py install
 
