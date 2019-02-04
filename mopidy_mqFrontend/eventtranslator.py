@@ -121,6 +121,10 @@ class EventTranslator:
 
         self.keepAliveSpeakers = new_state == 'playing'
 
+        if new_state != 'playing':
+            result.append(('track_name',''))
+            result.append(('stream_title',''))
+
         return result
 
     def tracklist_changed(self):
