@@ -32,7 +32,7 @@ class StatusPublisher(MosquittoClientBase, CoreListener):
 
     def on_connected(self):
         super(StatusPublisher, self).on_connected()
-        self.event_translator = EventTranslator()
+        self.event_translator = EventTranslator(self.core)
         self.mosquitto_client.publish(self.get_topic('status'), 'connected', 0, True)
 
     def on_event(self, event, **kwargs):

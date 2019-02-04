@@ -37,19 +37,55 @@ class ControlSubscriber(StatusPublisher):
 
     def on_mq_control_message(self, mqttc, obj, msg):
         self.logger.info('Received msg: %s' % msg.payload)
-        if msg.payload == 'stop':
+        command = str(msg.payload)
+        if command == 'stop':
             self.core.playback.stop()
             return
-        if msg.payload == 'start':
+        if command == 'start':
             self.core.playback.start()
             return
-        if msg.payload == 'pause':
+        if command == 'pause':
             self.core.playback.pause()
             return
-        if msg.payload == 'next':
+        if command == 'next':
             self.core.playback.next()
             return
-        if msg.payload == 'resume':
+        if command.startswith('prev'):
+            self.core.playback.previous()
+            return
+        if command == 'resume':
             self.core.playback.resume()
             return
-
+        if command == 'mute':
+            self.core.mixer.set_mute(True)
+            return
+        if command == 'unmute':
+            self.core.mixer.set_mute(False)
+            return
+        if command.startswith('volume'):
+            c = command.split('=')
+            if len(c) == 1:
+                self.logger.error('Volume format error')
+                return
+            if c == '+':
+                self.core.mixer.set_volume(self.core.mixer.get_volume() + 10)
+                return
+            if c == '-':
+                self.core.mixer.set_volume(self.core.mixer.get_volume() - 10)
+                return
+            try:
+                volume = int(c[1])
+            except (ValueError, TypeError):
+                self.logger.error('Volume no number')
+            self.core.mixer.set_volume(volume)
+            return
+        if command.startswith('play_now'):
+            c = command.split('=')
+            if len(c) == 1:
+                self.logger.error('uri missing')
+                return
+            uri=c[1]
+            self.core.tracklist.clear()
+            self.core.tracklist.add(uri=uri)
+            self.core.playback.play()
+            return

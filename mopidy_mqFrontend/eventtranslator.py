@@ -23,7 +23,8 @@ class EventTranslator:
 
     keepAliveSpeakers = None  # type: bool
 
-    def __init__(self):
+    def __init__(self, core):
+        self.core = core
         self.keepAliveSpeakers = False
 
     def translate(self, event, **kwargs):
@@ -130,13 +131,22 @@ class EventTranslator:
         """
         pass
 
+    def __send_playlist_update(self):
+        result = ""
+        playlists = self.core.playlists.as_list()
+        for playlist in playlists.get():
+            result = result + ("%s:%s;\n" % (playlist.name, playlist.uri))
+
+        return [("playlists", result)]
+
+
     def playlists_loaded(self):
         """
         Called when playlists are loaded or refreshed.
 
         *MAY* be implemented by actor.
         """
-        pass
+        self.__send_playlist_update()
 
     def playlist_changed(self, playlist):
         """
@@ -147,7 +157,7 @@ class EventTranslator:
         :param playlist: the changed playlist
         :type playlist: :class:`mopidy.models.Playlist`
         """
-        pass
+        self.__send_playlist_update()
 
     def playlist_deleted(self, uri):
         """
@@ -158,7 +168,7 @@ class EventTranslator:
         :param uri: the URI of the deleted playlist
         :type uri: string
         """
-        pass
+        self.__send_playlist_update()
 
     def options_changed(self):
         """
@@ -215,6 +225,6 @@ class EventTranslator:
         :param title: the new stream title
         :type title: string
         """
-        result = [('title', title)]
+        result = [('stream_title', title)]
 
         return result
