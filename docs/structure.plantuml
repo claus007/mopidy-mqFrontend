@@ -1,0 +1,19 @@
+@startuml
+
+
+MainActor <|-- ControlSubscriber
+ControlSubscriber <|-- StatusPublisher
+StatusPublisher <|-- MosquittoClientBase
+MosquittoClientBase <|-- pykka.ThreadingActor
+
+StatusPublisher *-- EventTranslator
+StatusPublisher *-- KeepAlive
+KeepAlive <|-- Thread
+
+note left of MainActor: interface to mopidy
+note left of ControlSubscriber:  interpretes control messages
+note left of StatusPublisher: sends out corelistener events
+note left of MosquittoClientBase: Handles Mosquitto events
+note right of EventTranslator: Translates CoreListener Events
+
+@enduml
