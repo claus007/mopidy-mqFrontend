@@ -15,7 +15,7 @@ Therefore you *can*:
     * Play playlist
     
 Therfore you *can't*:
-    * Edit/Modify playlists
+    * Edit/Modify playlists/tracklist
 
 Last but not least there is one message which you can use to keep your speaker
 turned on - it is send in an aquidistant interval like a heartbeat.
