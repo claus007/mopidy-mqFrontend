@@ -84,8 +84,11 @@ class ControlSubscriber(StatusPublisher):
             if len(c) == 1:
                 self.logger.error('uri missing')
                 return
-            uri=c[1]
+            uri = c[1]
             self.core.tracklist.clear()
             self.core.tracklist.add(uri=uri)
             self.core.playback.play()
+            return
+        if command == 'send_playists_update':
+            messages = self.on_event(u'playlists_loaded', None)
             return

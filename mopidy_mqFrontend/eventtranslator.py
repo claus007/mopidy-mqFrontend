@@ -15,6 +15,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -136,12 +137,12 @@ class EventTranslator:
         pass
 
     def get_playlist_update(self):
-        result = ""
+        result = {}
         playlists = self.core.playlists.as_list()
         for playlist in playlists.get():
-            result = result + ("%s:%s;\n" % (playlist.name, playlist.uri))
+            result[playlist.name]= playlist.uri
 
-        return [("playlists", result)]
+        return [("playlists", json.dumps(result))]
 
 
     def playlists_loaded(self):
@@ -150,7 +151,7 @@ class EventTranslator:
 
         *MAY* be implemented by actor.
         """
-        self.get_playlist_update()
+        return self.get_playlist_update()
 
     def playlist_changed(self, playlist):
         """
@@ -161,7 +162,7 @@ class EventTranslator:
         :param playlist: the changed playlist
         :type playlist: :class:`mopidy.models.Playlist`
         """
-        self.get_playlist_update()
+        return self.get_playlist_update()
 
     def playlist_deleted(self, uri):
         """
@@ -172,7 +173,7 @@ class EventTranslator:
         :param uri: the URI of the deleted playlist
         :type uri: string
         """
-        self.get_playlist_update()
+        return self.get_playlist_update()
 
     def options_changed(self):
         """
