@@ -90,5 +90,5 @@ class ControlSubscriber(StatusPublisher):
             self.core.playback.play()
             return
         if command == 'send_playists_update':
-            messages = self.on_event(u'playlists_loaded', None)
+            messages = self.on_event(u'playlists_loaded')
             return
