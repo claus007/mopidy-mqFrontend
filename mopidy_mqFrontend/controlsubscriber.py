@@ -92,3 +92,4 @@ class ControlSubscriber(StatusPublisher):
         if command == 'send_playists_update':
             messages = self.on_event(u'playlists_loaded')
             return
+        self.logger.error("Command not discovered: %s" % (command))
